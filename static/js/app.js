@@ -2,7 +2,7 @@ const canvas = document.getElementById('digit-canvas');
 const submit = document.getElementById('submit-canvas');
 // const clear = document.getElementById('clear-canvas');
 
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
 ctx.lineWidth = 20;
 ctx.lineCap = 'round';
 ctx.strokeStyle = 'black';
