@@ -51,16 +51,10 @@
     justify-content: center;
 }
 
-.input-section input, .symptom-container {
-    padding: 12px;
-    margin-bottom: 5%;
-    font-size: 1.1rem;
-    border-radius: 10px;
-    border: 2px solid #ccc;
+#digit-canvas {
+    border: 4px solid lightgray;
+    border-radius:10px;
+    margin-bottom: 20px;
+    background-color: whitesmoke;
+    box-shadow: 1px 1px 15px lightgray;
 }
-
-.input-section input, .symptom-select { width: 80%; }
-.symptom-select label { font-size: 1.1rem; margin-bottom: 2%; }
-.input-section button { font-size: 1.1rem; padding-inline:5%; }
-.symptom-container button { font-size: 1.05rem; padding-inline: 3%;}
-.symptom-list { overflow-y: auto; max-height: 150px; width: 100%;}
