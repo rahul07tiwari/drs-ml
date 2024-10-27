@@ -1,47 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digit Recognition System</title>
+    <title>Digit Recognition Sysetem</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../static/css/index.css">
-    <link rel="icon" type="image/x-icon" href="">
 </head>
-
 <body>
-    <main class="main-card">
-        <div class="main-content">
-            <section class="intro-section">
-                <h1 class="intro-heading">Digit Recognition System</h1>
-                <article class="intro-paragraphs">
-                    <p>Our digit recognition tool leverages machine learning algorithms like Fully Connected Neural Networks (FCNNs)
-                        to accurately classify handwritten digits.</p>
-                    <p>The platform is designed for ease of use, allowing users to draw digits and get quick predictions through a Flask-based web interface.</p>
-                </article>
-                <div class="social-icons">
-                    <a href="https://www.instagram.com/dseu_official" target="_blank" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://www.x.com/dseu_official" target="_blank" aria-label="X-twitter">
-                        <i class="fa-brands fa-x-twitter"></i>
-                    </a>
-                    <a href="https://www.github.com/neeraj-395/dpm-ml" target="_blank" aria-label="GitHub">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-                </div>
-            </section>
-
-            <section class="input-section">
-                <canvas id="digit-canvas" width="240" height="240"></canvas>
-                <button id="submit-canvas" type="button" class="btn btn-primary rounded-pill">Predict</button>
-                <!--<button id="clear-canvas" type="button" class="btn btn-primary rounded-pill ml-1">Clear</button>-->
-            </section>
+    <div class="container">
+        <div class="blackboard">
+            <canvas id="result-screen" width="450" height="450"></canvas>
+            <canvas id="input-screen" width="450" height="450"></canvas>
+            <button id="submit-canvas" type="button" class="predict">predict</button>
         </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
     <script src="../static/js/app.js"></script>
 </body>
-
 </html>
