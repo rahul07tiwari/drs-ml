@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 .venv
+.vscode
 
 # Compiled Object files
 *.slo

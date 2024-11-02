@@ -1,66 +1,70 @@
-#ifndef __LAYER_HPP__
-#define __LAYER_HPP__
+#pragma once
 
-#include <iostream>
-#include <numeric>
-#include <iomanip>
+#include <time.h>
 #include <vector>
 #include <random>
-#include <cmath>
+#include <iostream>
 
-typedef std::vector<float> vectorf;
-typedef std::vector<vectorf> matrixf;
+#define SIGMOID_ACTIVATION
+#include "activation.hpp"
 
-template <size_t num_inputs, size_t num_neurons>
+typedef std::vector<double> VectorD;
+typedef std::vector<VectorD> MatrixD;
+
 class Layer {
 private:
-    matrixf weights;
-    vectorf biases;
-    vectorf outputs;
-    float sigmoid(float x) { return 1.0 / (1.0 + expf(-x)); }
-    float sigmoid_prime(float x) { return x * (1 - x); }
+    VectorD biases;
+    VectorD inputs;
+    MatrixD weights;
+    VectorD outputs;
+    const size_t num_inputs;
+    const size_t num_neurons;
 
 public:
-    Layer() {
+    Layer(const size_t& __num_inputs, const size_t& __num_neurons)
+    :num_inputs(__num_inputs), num_neurons(__num_neurons)
+    {
+
         std::mt19937 rand(std::random_device{}());
-        std::uniform_real_distribution<float> distribution(-1.0, 1.0);
-        weights.resize(num_neurons, vectorf(num_inputs));
+        std::uniform_real_distribution<double> dist(-1.0, 1.0);
+        weights.resize(num_neurons, VectorD(num_inputs));
+        inputs.resize(num_inputs, 0);
         outputs.resize(num_neurons);
         biases.resize(num_neurons);
 
         for (size_t i = 0; i < num_neurons; ++i) {
             for (size_t j = 0; j < num_inputs; ++j) {
-                weights[i][j] = distribution(rand);
+                weights[i][j] = dist(rand);
             }
-            biases[i] = distribution(rand);
+            biases[i] = dist(rand);
         }
     }
 
-    vectorf forward(const vectorf& inputs) {
+    VectorD forward(const VectorD& _inputs) 
+    {
+        inputs = _inputs;
+        outputs.resize(num_neurons, 0.0);
         for (size_t i = 0; i < num_neurons; ++i) {
-            outputs[i] = biases[i];
+            double activation_input = biases[i];
             for (size_t j = 0; j < num_inputs; ++j) {
-                outputs[i] += weights[i][j] * inputs[j];
+                activation_input += weights[i][j] * inputs[j];
             }
-            outputs[i] = sigmoid(outputs[i]);
+            outputs[i] = sigmoid(activation_input);
         }
         return outputs;
     }
 
-    vectorf backward(const vectorf& d_output, const vectorf& inputs, float learning_rate) {
-        vectorf d_inputs(num_inputs, 0.0f);
-
+    VectorD backward(const VectorD& d_outputs, const double& learning_rate)
+    {
+        VectorD d_inputs(num_inputs, 0.0);
         for (size_t i = 0; i < num_neurons; ++i) {
-            float delta = d_output[i] * sigmoid_prime(outputs[i]);
+            const double delta = d_outputs[i] * sigmoid_prime(outputs[i]);
             for (size_t j = 0; j < num_inputs; ++j) {
                 d_inputs[j] += weights[i][j] * delta;
-                weights[i][j] -= learning_rate * delta * inputs[j];
+                weights[i][j] += learning_rate * delta * inputs[j];
             }
-            biases[i] -= learning_rate * delta;
+            biases[i] += learning_rate * delta;
         }
-
         return d_inputs;
     }
 };
-
-#endif // __LAYER_HPP__
