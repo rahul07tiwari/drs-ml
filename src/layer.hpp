@@ -1,12 +1,8 @@
 #pragma once
+#include "activation.hpp"
 
-#include <time.h>
 #include <vector>
 #include <random>
-#include <iostream>
-
-#define SIGMOID_ACTIVATION
-#include "activation.hpp"
 
 typedef std::vector<double> VectorD;
 typedef std::vector<VectorD> MatrixD;
@@ -19,24 +15,26 @@ private:
     VectorD outputs;
     const size_t num_inputs;
     const size_t num_neurons;
+    ActFunc activation;
+    ActFuncPrime activation_prime;
 
 public:
-    Layer(const size_t& __num_inputs, const size_t& __num_neurons)
-    :num_inputs(__num_inputs), num_neurons(__num_neurons)
+    Layer(const size_t& __num_inputs, const size_t& __num_neurons, Activation type)
+    :num_inputs(__num_inputs), num_neurons(__num_neurons), activation(activation_func(type)), 
+     activation_prime(activation_prime_func(type))
     {
-
-        std::mt19937 rand(std::random_device{}());
-        std::uniform_real_distribution<double> dist(-1.0, 1.0);
+        std::mt19937 rand(0);
+        double scale_factor = std::sqrt(2.0 / static_cast<double>(__num_inputs));
+        std::uniform_real_distribution<double> dist(-scale_factor, scale_factor);
         weights.resize(num_neurons, VectorD(num_inputs));
-        inputs.resize(num_inputs, 0);
         outputs.resize(num_neurons);
         biases.resize(num_neurons);
+        inputs.resize(num_inputs);
 
         for (size_t i = 0; i < num_neurons; ++i) {
             for (size_t j = 0; j < num_inputs; ++j) {
                 weights[i][j] = dist(rand);
-            }
-            biases[i] = dist(rand);
+            } biases[i] = dist(rand);
         }
     }
 
@@ -49,7 +47,7 @@ public:
             for (size_t j = 0; j < num_inputs; ++j) {
                 activation_input += weights[i][j] * inputs[j];
             }
-            outputs[i] = sigmoid(activation_input);
+            outputs[i] = activation(activation_input);
         }
         return outputs;
     }
@@ -58,7 +56,7 @@ public:
     {
         VectorD d_inputs(num_inputs, 0.0);
         for (size_t i = 0; i < num_neurons; ++i) {
-            const double delta = d_outputs[i] * sigmoid_prime(outputs[i]);
+            const double delta = d_outputs[i] * activation_prime(outputs[i]);
             for (size_t j = 0; j < num_inputs; ++j) {
                 d_inputs[j] += weights[i][j] * delta;
                 weights[i][j] += learning_rate * delta * inputs[j];
@@ -67,4 +65,7 @@ public:
         }
         return d_inputs;
     }
+
+    const MatrixD& get_weights() const { return weights; }
+    const VectorD& get_biases() const { return biases; }
 };

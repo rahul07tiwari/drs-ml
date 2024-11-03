@@ -1,3 +1,5 @@
+import {predict} from './network.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('input-screen');
     const submit = document.getElementById('submit-canvas');
@@ -54,6 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 binaryArray.push(isWhite ? 1 : 0);
             }
         }
-        console.log(binaryArray);
+        console.log(predict(binaryArray));
     });
 });
