@@ -1,7 +1,7 @@
 var network_data = null
 
 document.addEventListener("DOMContentLoaded", async function () {
-    const response = await fetch('../../models/network.json');
+    const response = await fetch('models/network.json');
     network_data = await response.json();
     console.log("Neural Network data loaded successfully!");
 });
