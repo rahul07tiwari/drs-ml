@@ -26,8 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         resultCtx.stroke();
     };
     
-    
-
     const addDrawingListeners = () => {
         let is_drawing = false;
         inputCanvas.addEventListener('mousedown', (e) => {
